@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI Payment QR Code Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>UPI Payment QR Code Generator</h2>
+        <form id="upiForm">
+            <label for="upiId">UPI ID:</label>
+            <input type="text" id="upiId" placeholder="example@upi" required>
+
+            <label for="name">Payee Name:</label>
+            <input type="text" id="name" placeholder="Payee Name" required>
+
+            <label for="amount">Amount (optional):</label>
+            <input type="number" id="amount" placeholder="Enter amount">
+
+            <label for="transactionNote">Transaction Note (optional):</label>
+            <input type="text" id="transactionNote" placeholder="Enter a note for the transaction">
+
+            <button type="button" onclick="generateQRCode()">Generate QR Code</button>
+        </form>
+        
+        <div id="qrCode"></div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="logo-container">
+            <img src="test.jpg" alt="Logo" id="footerLogo">
+        </div>
+<p> Any Vision Services </p> 
+        <p>Developed by Neel T Trivedi</p>
+    </footer>
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function generateQRCode() {
+            // Get form values
+            const upiId = document.getElementById("upiId").value;
+            const name = document.getElementById("name").value;
+            const amount = document.getElementById("amount").value;
+            const transactionNote = document.getElementById("transactionNote").value;
+
+            // Construct the UPI payment URL
+            let upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}`;
+            if (amount) upiUrl += `&am=${encodeURIComponent(amount)}`;
+            if (transactionNote) upiUrl += `&tn=${encodeURIComponent(transactionNote)}`;
+
+            // Clear previous QR code
+            document.getElementById("qrCode").innerHTML = "";
+
+            // Generate new QR code
+            new QRCode(document.getElementById("qrCode"), {
+                text: upiUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    </script>
+</body>
+</html>
